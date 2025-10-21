@@ -13,24 +13,30 @@
 
   <style>
     :root{
-      --purple-700:#7C3AED; /* roxo vivo */
-      --purple-600:#8B5CF6; /* lilás */
-      --purple-500:#A78BFA; /* lilás claro */
-      --purple-900:#5B21B6; /* roxo escuro */
-      --gradient: linear-gradient(90deg, #5B21B6 0%, #7C3AED 35%, #A78BFA 100%);
+      /* Paleta mais escura e saturada */
+      --purple-950:#2e1065;
+      --purple-900:#4c1d95;
+      --purple-800:#5B21B6;
+      --purple-700:#7C3AED;
+      --purple-600:#8B5CF6;
+      --purple-500:#A78BFA;
+      --purple-300:#D8B4FE;
+
+      /* Gradiente reforçado (início roxo médio) */
+      --gradient: linear-gradient(90deg, #7C3AED 0%, #8B5CF6 45%, #A78BFA 100%);
     }
 
     html, body {
       background:#fff;
       font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, 'Noto Sans';
-      color:#3b0764; /* tom de roxo escuro para textos padrão */
+      color:#3b0764; /* roxo escuro para texto */
       scroll-behavior:smooth;
     }
 
     /* Barrinha de progresso no topo */
     #scroll-progress{
       position: fixed; top: 0; left: 0; height: 4px; width:0; z-index: 1040;
-      background: var(--gradient); box-shadow: 0 1px 4px rgba(0,0,0,.08);
+      background: var(--gradient); box-shadow: 0 1px 8px rgba(92,45,196,.35);
     }
 
     /* Utilitários de cores */
@@ -44,12 +50,20 @@
       color: transparent;
     }
 
-    /* Botões */
+    /* Botões (mais “cheios”) */
     .btn-gradient{
       background: var(--gradient);
-      color:#fff; border: none; box-shadow: 0 8px 24px rgba(124,58,237,.25);
+      color:#fff; border: none;
+      box-shadow: 0 10px 28px rgba(92,45,196,.28);
+      transform: translateY(0);
+      transition: transform .2s ease, filter .2s ease, box-shadow .2s ease;
     }
-    .btn-gradient:hover{ filter: brightness(1.05); color:#fff; }
+    .btn-gradient:hover{
+      filter: brightness(1.03);
+      transform: translateY(-3px);
+      box-shadow: 0 16px 38px rgba(92,45,196,.33);
+      color:#fff;
+    }
 
     /* Hero */
     .hero{
@@ -59,41 +73,75 @@
     }
     .hero-badge{
       display:inline-block; font-weight:600; letter-spacing:.08em;
-      background: rgba(167,139,250,.15); color: var(--purple-900);
-      border:1px solid rgba(167,139,250,.35); border-radius: 9999px; padding:.35rem .75rem;
+      background: rgba(167,139,250,.20); color: var(--purple-900);
+      border:1px solid rgba(124,58,237,.45); border-radius: 9999px; padding:.35rem .75rem;
+      backdrop-filter: blur(6px);
     }
 
-    /* Cards translúcidos com borda lilás */
+    /* Blobs decorativos no Hero (um pouco mais escuros) */
+    .hero-blobs { position:absolute; inset:0; pointer-events:none; z-index:0; }
+    .blob{
+      position:absolute; width:360px; height:360px; border-radius:50%;
+      filter: blur(60px); opacity:.35; animation: blobFloat 14s ease-in-out infinite;
+    }
+    .blob.b1{ background: radial-gradient(40% 40% at 50% 50%, var(--purple-500), var(--purple-700)); top:-80px; left:-120px; }
+    .blob.b2{ background: radial-gradient(40% 40% at 50% 50%, var(--purple-300), var(--purple-600)); bottom:-100px; right:-120px; animation-delay: -4s; }
+    @keyframes blobFloat { 0%,100%{ transform: translate(0,0) scale(1)} 50%{ transform: translate(20px,-16px) scale(1.06)} }
+
+    /* Cards translúcidos com borda lilás (mais contraste) */
     .fancy-card{
-      background: #ffffff; border: 1px solid rgba(124,58,237,.18);
-      border-radius: 18px; box-shadow: 0 10px 30px rgba(124,58,237,.08);
+      background: rgba(255,255,255,.95);
+      border: 1px solid rgba(124,58,237,.30);
+      border-radius: 18px; box-shadow: 0 12px 30px rgba(92,45,196,.15);
+      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+    }
+    .fancy-card:hover{
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(92,45,196,.22);
+      border-color: rgba(124,58,237,.45);
     }
 
     /* Animações de revelar ao rolar */
     .reveal{ opacity: 0; transform: translateY(18px); transition: all .8s cubic-bezier(.22,1,.36,1); }
     .reveal.visible{ opacity:1; transform:none; }
 
+    /* Entrada do título */
+    .intro-pop{ opacity:0; transform: translateY(10px) scale(.98); animation: intro .9s .15s cubic-bezier(.22,1,.36,1) forwards; }
+    @keyframes intro{ to{ opacity:1; transform:none } }
+
     /* Sutileza flutuante */
     .floaty{ animation: floaty 6s ease-in-out infinite; }
     @keyframes floaty{ 0%,100%{ transform: translateY(0) } 50%{ transform: translateY(-8px) } }
 
     /* Rodapé */
-    footer{ border-top:1px dashed rgba(124,58,237,.25); }
+    footer{ border-top:1px dashed rgba(124,58,237,.35); }
 
     /* Flores nos cantos (atrás e sem movimento) */
-    .corner-flower{ position: fixed; z-index: 1; opacity: .9; pointer-events: none; filter: drop-shadow(0 6px 18px rgba(124,58,237,.15)); }
+    .corner-flower{ position: fixed; z-index: 1; opacity: .9; pointer-events: none; filter: drop-shadow(0 6px 18px rgba(92,45,196,.15)); }
     .corner-flower.top-left{ top: -20px; left: -10px; }
     .corner-flower.bottom-right{ bottom: -20px; right: -10px; }
     .content-layer{ position: relative; z-index: 2; }
 
     /* Decorativo: divisória com gradiente */
-    .divider{ height:2px; background: linear-gradient(90deg, rgba(124,58,237,0), rgba(124,58,237,.55), rgba(124,58,237,0)); }
+    .divider{ height:2px; background: linear-gradient(90deg, rgba(124,58,237,0), rgba(124,58,237,.6), rgba(124,58,237,0)); }
 
     /* Carousel ajustes */
     .carousel-item img{ object-fit: cover; height: 340px; border-radius: 16px; }
+    .carousel .fancy-card img{ height: 220px; object-fit: cover; }
+
+    /* Seções - título com underline animado */
+    .section-title{ position:relative; display:inline-block; }
+    .section-title::after{
+      content:''; position:absolute; left:0; right:0; bottom:-6px; height:3px;
+      background: var(--gradient); border-radius: 9999px; transform: scaleX(0); transform-origin:left; animation: underline .9s .2s ease forwards;
+    }
+    @keyframes underline{ to{ transform: scaleX(1) } }
 
     /* Acessibilidade focus */
     :focus-visible{ outline: 3px solid var(--purple-500); outline-offset: 2px; border-radius: 6px; }
+
+    /* Confete (cores mais fortes) */
+    #confetti-canvas{ position: fixed; inset: 0; z-index: 3000; pointer-events: none; }
 
     /* Pequenas telas */
     @media (max-width: 576px){
@@ -104,6 +152,9 @@
   </style>
 </head>
 <body>
+  <!-- Confete: 2s ao carregar -->
+  <canvas id="confetti-canvas"></canvas>
+
   <!-- Barrinha de progresso -->
   <div id="scroll-progress"></div>
 
@@ -145,15 +196,20 @@
 
   <!-- HERO -->
   <header class="hero position-relative">
+    <div class="hero-blobs">
+      <span class="blob b1"></span>
+      <span class="blob b2"></span>
+    </div>
+
     <div class="container position-relative">
       <div class="row align-items-center g-4">
         <div class="col-lg-7">
-          <span class="hero-badge mb-3">Você está convidado(a) ✨</span>
-          <h1 class="display-3 fw-bold gradient-text mb-3">Aniversário da <span class="text-lilas">Camila</span></h1>
-          <p class="mb-2 text-roxo fw-semibold">Comemoração de <span class="gradient-text">17 anos</span></p>
-          <p class="lead text-roxo">Venha celebrar um dia especial com muita alegria, música e boas lembranças! 💜</p>
+          <span class="hero-badge mb-3 intro-pop">Você está convidado(a) ✨</span>
+          <h1 class="display-3 fw-bold gradient-text mb-3 intro-pop" style="animation-delay:.2s">Aniversário da <span class="text-lilas">Camila</span></h1>
+          <p class="mb-2 text-roxo fw-semibold intro-pop" style="animation-delay:.35s">Comemoração de <span class="gradient-text">17 anos</span></p>
+          <p class="lead text-roxo reveal">Venha celebrar um dia especial com muita alegria, música e boas lembranças! 💜</p>
 
-          <div class="mt-4 d-flex gap-2 flex-wrap">
+          <div class="mt-4 d-flex gap-2 flex-wrap reveal">
             <a href="#rsvp" class="btn btn-lg btn-gradient px-4">Confirmar Presença</a>
             <a href="#presentes" class="btn btn-outline-secondary px-4 border-0" style="color:var(--purple-700)">Possíveis Presentes</a>
           </div>
@@ -175,7 +231,7 @@
   <section class="py-5" id="presentes">
     <div class="container">
       <div class="text-center mb-4">
-        <h2 class="h3 gradient-text">Possíveis Presentes</h2>
+        <h2 class="h3 gradient-text section-title">Possíveis Presentes</h2>
         <p class="text-roxo">Algumas ideias caso queira presentear ✨</p>
       </div>
 
@@ -267,7 +323,7 @@
   <section id="especificacoes" class="py-5 bg-light-subtle">
     <div class="container">
       <div class="text-center mb-5">
-        <h2 class="display-6 gradient-text">Especificações</h2>
+        <h2 class="display-6 gradient-text section-title">Especificações</h2>
         <p class="text-roxo">Tamanhos, marcas e preferências para te ajudar a escolher 💜</p>
       </div>
       <div class="row g-4">
@@ -275,9 +331,9 @@
           <div class="fancy-card p-4 h-100">
             <h3 class="h5 text-lilas">Tamanhos</h3>
             <ul class="mb-0">
-              <li>Calçado: <strong>—</strong></li>
-              <li>Roupa (parte de cima): <strong>—</strong></li>
-              <li>Roupa (parte de baixo): <strong>—</strong></li>
+              <li><strong>Calça & Short:</strong> 34</li>
+              <li><strong>Tênis & Chinelo:</strong> 35/36</li>
+              <li><strong>Cropped & Blusas:</strong> PP/P</li>
             </ul>
           </div>
         </div>
@@ -285,9 +341,10 @@
           <div class="fancy-card p-4 h-100">
             <h3 class="h5 text-lilas">Preferências</h3>
             <ul class="mb-0">
-              <li>Marcas favoritas: <strong>—</strong></li>
-              <li>Joias (material): <strong>—</strong></li>
-              <li>Cores: <strong>Roxo/Lilás</strong></li>
+              <li><strong>Joias (material):</strong> Prata</li>
+              <li><strong>Maquiagens:</strong> Gloss, Blush & Rímel</li>
+              <li><strong>Cores:</strong> Branco, Preto, Cinza, Cereja & Marrom</li>
+              <li><strong>Marcas favoritas:</strong> —</li>
             </ul>
           </div>
         </div>
@@ -299,18 +356,17 @@
   <section id="pix" class="py-5">
     <div class="container">
       <div class="text-center mb-4">
-        <h2 class="h3 gradient-text">Não tem certeza do que dar? Pode mandar um Pix 💸</h2>
+        <h2 class="h3 gradient-text section-title">Não tem certeza do que dar? Pode mandar um Pix 💸</h2>
         <p class="text-roxo">Use o QR Code abaixo ou copie a chave.</p>
       </div>
       <div class="row justify-content-center g-4 reveal">
         <div class="col-md-4 text-center">
           <div class="fancy-card p-3">
-            <!-- Substitua pelo seu arquivo -->
             <img src="imgs/qrcode.png" class="img-fluid rounded" alt="QR Code do Pix">
           </div>
         </div>
         <div class="col-12 text-center">
-          <div class="d-inline-flex align-items-center gap-2 p-2 border rounded-3" style="border-color:rgba(124,58,237,.25)!important">
+          <div class="d-inline-flex align-items-center gap-2 p-2 border rounded-3" style="border-color:rgba(124,58,237,.35)!important">
             <code class="text-roxo">chavedeexemplo@gmail.com</code>
             <button id="copyPix" class="btn btn-gradient btn-sm">Copiar chave</button>
           </div>
@@ -323,7 +379,7 @@
   <section id="rsvp" class="py-5">
     <div class="container">
       <div class="text-center mb-4">
-        <h2 class="h3 gradient-text">Confirme sua presença</h2>
+        <h2 class="h3 gradient-text section-title">Confirme sua presença</h2>
         <p class="text-roxo">Sua confirmação será enviada por WhatsApp para Camila.</p>
       </div>
       <form class="row g-3 justify-content-center reveal" id="rsvp-form" novalidate>
@@ -353,7 +409,7 @@
     <div class="container">
       <div class="row align-items-center g-4">
         <div class="col-lg-6 reveal">
-          <h2 class="h3 gradient-text">Como chegar</h2>
+          <h2 class="h3 gradient-text section-title">Como chegar</h2>
           <p class="mb-3">CarPUB — R. Rafael Zacarias, 227 - Democrata, Juiz de Fora - MG, 36035-290</p>
           <a class="btn btn-outline-secondary border-0" style="color:var(--purple-700)" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=CarPUB%20%E2%80%94%20R.%20Rafael%20Zacarias%2C%20227%20-%20Democrata%2C%20Juiz%20de%20Fora%20-%20MG%2C%2036035-290">Abrir no Google Maps (CarPUB)</a>
         </div>
@@ -422,10 +478,81 @@
 
     // Copiar chave Pix
     document.getElementById('copyPix')?.addEventListener('click', ()=>{
-      navigator.clipboard.writeText('chavedeexemplo@gmail.com').then(()=>{
-        alert('Chave Pix copiada!');
-      });
+      navigator.clipboard.writeText('chavedeexemplo@gmail.com').then(()=>{ alert('Chave Pix copiada!'); });
     });
+
+    // Confete nos 2 primeiros segundos (tons um pouco mais escuros)
+    (function(){
+      const canvas = document.getElementById('confetti-canvas');
+      const ctx = canvas.getContext('2d');
+      let w, h, raf, start;
+      const duration = 2000; // 2s
+      const pieces = [];
+      const colors = ['#A78BFA','#8B5CF6','#7C3AED','#5B21B6'];
+
+      function resize(){
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      // cria partículas
+      const count = Math.min(170, Math.floor(w / 7));
+      for(let i=0;i<count;i++){
+        pieces.push({
+          x: Math.random()*w,
+          y: -Math.random()*h/2,
+          s: 6 + Math.random()*8,
+          r: Math.random()*360,
+          v: 2 + Math.random()*3,
+          vr: -3 + Math.random()*6,
+          color: colors[Math.floor(Math.random()*colors.length)],
+          shape: Math.random() < .5 ? 'rect' : 'tri'
+        });
+      }
+
+      function drawPiece(p){
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.r * Math.PI/180);
+        ctx.fillStyle = p.color;
+        if(p.shape === 'rect'){
+          ctx.fillRect(-p.s/2, -p.s/2, p.s, p.s*0.6);
+        } else {
+          ctx.beginPath();
+          ctx.moveTo(0, -p.s/2);
+          ctx.lineTo(p.s/2, p.s/2);
+          ctx.lineTo(-p.s/2, p.s/2);
+          ctx.closePath();
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+
+      function step(ts){
+        if(!start) start = ts;
+        const elapsed = ts - start;
+        ctx.clearRect(0,0,w,h);
+
+        pieces.forEach(p=>{
+          p.y += p.v;
+          p.x += Math.sin((p.y+p.s)*0.02)*1.3;
+          p.r += p.vr;
+          if(p.y > h + 50){ p.y = -20; p.x = Math.random()*w; }
+          drawPiece(p);
+        });
+
+        if(elapsed < duration){
+          raf = requestAnimationFrame(step);
+        } else {
+          canvas.style.transition = 'opacity .5s ease';
+          canvas.style.opacity = '0';
+          setTimeout(()=>{ cancelAnimationFrame(raf); canvas.remove(); }, 550);
+        }
+      }
+      raf = requestAnimationFrame(step);
+    })();
   </script>
 </body>
 </html>
